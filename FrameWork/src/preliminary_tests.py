@@ -213,7 +213,7 @@ def test_zokrates_connection():
     print("\n=== ZoKrates CLI Connection Test ===")
     global tested, passed
     tested += 1
-    circuit_path = os.path.join("..", "zokrates-files", "dummy.zok")
+    circuit_path = os.path.join("..", "..", "zokrates-files", "dummy.zok")
     
     # Compile circuit
     if not run_zokrates_compile(circuit_path):
@@ -259,7 +259,7 @@ def test_vehicle_rsu_interaction_real_zokrates_dummy():
     print("\n=== Real ZoKrates End-to-End Test with dummy.zok ===")
     global tested, passed
     tested += 1
-    circuit_path = os.path.join("..", "zokrates-files", "dummy.zok")
+    circuit_path = os.path.join("..", "..", "zokrates-files", "dummy.zok")
     
     # Generate random field inputs for dummy.zok
     a = random.randint(1, 100)
@@ -372,7 +372,7 @@ def test_zokrates_isolated_multiple_vehicles():
     global tested, passed
     tested += 1
     print("\n=== ZoKrates-Integrated Isolated Test: Multiple Vehicles ===")
-    circuit_path = os.path.join("..", "zokrates-files", "dummy.zok")
+    circuit_path = os.path.join("..", "..", "zokrates-files", "dummy.zok")
     num_vehicles = 2
     all_passed = True
     
@@ -421,7 +421,7 @@ def test_zokrates_end_to_end_multiple_vehicles():
     global tested, passed
     tested += 1
     print("\n=== ZoKrates-Integrated End-to-End Test: Multiple Vehicles ===")
-    circuit_path = os.path.join("..", "zokrates-files", "dummy.zok")
+    circuit_path = os.path.join("..", "..", "zokrates-files", "dummy.zok")
     num_vehicles = 2
     all_passed = True
     

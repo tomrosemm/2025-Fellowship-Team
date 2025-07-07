@@ -157,7 +157,7 @@ if __name__ == "__main__":
     set_debug_mode(True)
     print("Compiling dummy.zok...")
     # Use new path for dummy.zok
-    dummy_zok_path = os.path.join("..", "zokrates-files", "dummy.zok")
+    dummy_zok_path = os.path.join("..", "..", "zokrates-files", "dummy.zok")
     if not run_zokrates_compile(dummy_zok_path):
         print("Compilation failed.")
         exit(1)
