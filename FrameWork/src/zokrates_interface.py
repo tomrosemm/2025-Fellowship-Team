@@ -14,7 +14,7 @@ import os
 DEBUG_MODE = False
 
 """Enable or disable debug mode for detailed output"""
-def set_debug_mode(enabled: bool):
+def set_debug_mode(enabled):
     global DEBUG_MODE
     DEBUG_MODE = enabled
 
