@@ -43,7 +43,7 @@ passed = 0
 DEBUG_MODE = False
 
 """Enable or disable debug mode"""
-def set_debug_mode(enabled: bool):
+def set_debug_mode(enabled):
     global DEBUG_MODE
     DEBUG_MODE = enabled
     set_zokrates_debug_mode(enabled)
