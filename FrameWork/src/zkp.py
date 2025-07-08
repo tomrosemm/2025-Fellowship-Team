@@ -44,28 +44,22 @@ bool: True if proof is valid, False otherwise
 """
 def generate_zkp_proof_real(circuit_path, otp, timestamp):
     
-    # Compile the ZoKrates circuit; return False if compilation fails
     if not run_zokrates_compile(circuit_path):
         return False
     
-    # Run ZoKrates setup to generate keys; return False if setup fails
     if not run_zokrates_setup():
         return False
     
-    # Prepare the arguments as strings for the witness computation
     args = [str(otp), str(timestamp)]
-    # Compute the witness; return False if this step fails
     if not run_zokrates_compute_witness(args):
         return False
     
-    # Generate the proof; return False if this step fails
     if not run_zokrates_generate_proof():
         return False
     
-    # Verify the proof and return the result (True if valid, False otherwise)
     return run_zokrates_verify()
 
-# For backward compatibility, you can alias the simulated version as the default:
+
 generate_zkp_proof = generate_zkp_proof_simulated
 
 if __name__ == "__main__":
