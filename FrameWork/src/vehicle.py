@@ -2,6 +2,7 @@
 vehicle.py
 
 Requires: otp.py, zkp.py
+
 Defines the Vehicle class, which is responsible for generating one-time passwords (OTPs) and creating zero-knowledge proofs (ZKPs) for authentication
 
 - Each Vehicle instance is initialized with a unique ID and secret
@@ -41,6 +42,7 @@ class Vehicle:
     secret (str): Secret key unique to the vehicle
     """
     def __init__(self, vehicle_id, secret):
+        
         self.vehicle_id = vehicle_id
         self.secret = secret
 
@@ -52,6 +54,7 @@ class Vehicle:
     tuple: (otp (str), timestamp (int))
     """
     def generate_otp(self):
+        
         return generate_otp(self.secret)
 
 
@@ -66,13 +69,16 @@ class Vehicle:
     str: Simulated ZKP proof
     """
     def create_zkp(self, otp, timestamp):
+        
         return generate_zkp_proof(otp, timestamp)
 
 
 if __name__ == "__main__":
+    
     # Simple test for Vehicle class
     test_vehicle = Vehicle("TEST_VEHICLE", "mysecret")
     otp, timestamp = test_vehicle.generate_otp()
     print(f"[Vehicle] OTP: {otp}\nTimestamp: {timestamp}")
     zkp = test_vehicle.create_zkp(otp, timestamp)
+    
     print(f"[Vehicle] ZKP: {zkp}")

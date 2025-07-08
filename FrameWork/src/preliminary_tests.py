@@ -2,6 +2,7 @@
 preliminary_tests.py
 
 Requires: vehicle.py, rsu.py, zokrates_interface.py, blockchain.py
+
 Run this script directly to execute all tests and scenarios in testAndScenarioRunner()
 
 This module contains test routines to simulate and validate the ZKP-OTP authentication protocol
@@ -49,15 +50,17 @@ def set_debug_mode(enabled: bool):
 
 """Clears the console screen based on the operating system"""
 def clear_console():
+    
     if os.name == 'nt':
         os.system('cls')
+        
     else:
         os.system('clear')
-
 
 """Test the workflow using a simulated ZKP (hash-based)"""
 def test_vehicle_rsu_interaction_simulated():
     
+    # Test Setup
     print("\n=== Simulated ZKP Test ===")
     global tested, passed
     tested += 1
@@ -70,16 +73,19 @@ def test_vehicle_rsu_interaction_simulated():
 
     # Generate OTP and timestamp
     otp, timestamp = vehicle.generate_otp()
+    
     if DEBUG_MODE:
         print(f"\n[Simulated] OTP: {otp}\n\nTimestamp: {timestamp}\n")
         
     # Create simulated ZKP proof
     zkp_proof = vehicle.create_zkp(otp, timestamp)
+    
     if DEBUG_MODE:
         print(f"[Simulated] ZKP Proof: {zkp_proof}\n")
 
     # RSU verifies ZKP proof
     verification_result = rsu.verify_zkp(vehicle_id, zkp_proof, timestamp)
+    
     if DEBUG_MODE:
         print(f"[Simulated] Verification result: {verification_result}\n")
 
@@ -87,6 +93,7 @@ def test_vehicle_rsu_interaction_simulated():
     if verification_result:
         passed += 1
         print("[Simulated] Vehicle authenticated. Session started.\n")
+        
     else:
         print("[Simulated] Authentication failed.\n")
 
@@ -94,6 +101,7 @@ def test_vehicle_rsu_interaction_simulated():
 """Simulate the full workflow, including using ZoKrates for the ZKP as well as blockchain verification and logging"""
 def test_vehicle_rsu_blockchain_simulated():
     
+    # Test Setup
     print("\n=== Simulated Blockchain ZKP Test ===")
     global tested, passed
     tested += 1
@@ -106,16 +114,19 @@ def test_vehicle_rsu_blockchain_simulated():
 
     # Generate OTP and timestamp
     otp, timestamp = vehicle.generate_otp()
+    
     if DEBUG_MODE:
         print(f"\n[Simulated] OTP: {otp}\n\nTimestamp: {timestamp}\n")
 
     # Create simulated ZKP proof
     zkp_proof = vehicle.create_zkp(otp, timestamp)
+    
     if DEBUG_MODE:
         print(f"[Simulated] ZKP Proof: {zkp_proof}\n")
 
     # RSU verifies ZKP proof
     verification_result = rsu.verify_zkp(vehicle_id, zkp_proof, timestamp)
+    
     if DEBUG_MODE:
         print(f"[Simulated] RSU Verification result: {verification_result}\n")
 
@@ -126,6 +137,7 @@ def test_vehicle_rsu_blockchain_simulated():
     if outcome:
         passed += 1
         print("[Simulated] Access granted by infrastructure.\n")
+        
     else:
         print("[Simulated] Access denied by infrastructure.\n")
 
@@ -133,6 +145,7 @@ def test_vehicle_rsu_blockchain_simulated():
 """End-to-end scenario: Vehicle authenticates successfully and is granted access, simulated"""
 def scenario_successful_authentication():
     
+    # Test Setup
     print("\n=== End-to-End Scenario: Successful Authentication ===")
     global tested, passed
     tested += 1
@@ -145,24 +158,29 @@ def scenario_successful_authentication():
 
     # Generate OTP and timestamp
     otp, timestamp = vehicle.generate_otp()
+    
     if DEBUG_MODE:
         print(f"\nVehicle {vehicle_id} generated OTP: {otp} at {timestamp}\n")
         
     # Create ZKP proof
     zkp_proof = vehicle.create_zkp(otp, timestamp)
+    
     if DEBUG_MODE:
         print(f"Vehicle {vehicle_id} created ZKP proof: {zkp_proof}\n")
 
     # RSU verifies ZKP proof
     verification_result = rsu.verify_zkp(vehicle_id, zkp_proof, timestamp)
+    
     if DEBUG_MODE:
         print(f"RSU verification result: {verification_result}\n")
 
     # Blockchain verification and access outcome
     outcome = simulate_blockchain_verification(vehicle_id, zkp_proof, timestamp, verification_result) if DEBUG_MODE else verification_result
+    
     if outcome:
         passed += 1
         print("Access granted by infrastructure.\n")
+        
     else:
         print("Access denied by infrastructure.\n")
 
@@ -170,6 +188,7 @@ def scenario_successful_authentication():
 """End-to-end scenario: Vehicle fails authentication due to wrong secret, simulated"""
 def scenario_failed_authentication():
     
+    # Test Setup
     print("\n=== End-to-End Scenario: Failed Authentication ===")
     global tested, passed
     tested += 1
@@ -185,23 +204,28 @@ def scenario_failed_authentication():
 
     # Generate OTP and timestamp
     otp, timestamp = vehicle.generate_otp()
+    
     if DEBUG_MODE:
         print(f"\nVehicle {vehicle_id} generated OTP: {otp} at {timestamp}\n")
         
     # Create ZKP proof
     zkp_proof = vehicle.create_zkp(otp, timestamp)
+    
     if DEBUG_MODE:
         print(f"Vehicle {vehicle_id} created ZKP proof: {zkp_proof}\n")
 
     # RSU verifies ZKP proof
     verification_result = rsu.verify_zkp(vehicle_id, zkp_proof, timestamp)
+    
     if DEBUG_MODE:
         print(f"RSU verification result: {verification_result}\n")
 
     # Blockchain verification and access outcome
     outcome = simulate_blockchain_verification(vehicle_id, zkp_proof, timestamp, verification_result) if DEBUG_MODE else verification_result
+    
     if outcome:
         print("Access granted by infrastructure (unexpected).\n")
+        
     else:
         passed += 1
         print("Access denied by infrastructure (expected).\n")
@@ -210,6 +234,7 @@ def scenario_failed_authentication():
 """Test the connection and workflow with ZoKrates CLI using dummy.zok"""
 def test_zokrates_connection():
     
+    # Test Setup
     print("\n=== ZoKrates CLI Connection Test ===")
     global tested, passed
     tested += 1
@@ -241,11 +266,14 @@ def test_zokrates_connection():
     
     # Verify proof
     verification_result = run_zokrates_verify()
+    
     if DEBUG_MODE:
         print(f"[ZoKrates Test] Verification result: {verification_result}\n")
+        
     if verification_result:
         passed += 1
         print("[ZoKrates Test] ZoKrates connection and workflow succeeded!\n")
+        
     else:
         print("[ZoKrates Test] ZoKrates connection or workflow failed.\n")
         
@@ -256,6 +284,7 @@ def test_zokrates_connection():
 """Simulates a real ZKP workflow using the ZoKrates CLI on Linux"""
 def test_vehicle_rsu_interaction_real_zokrates_dummy():
     
+    # Test Setup
     print("\n=== Real ZoKrates End-to-End Test with dummy.zok ===")
     global tested, passed
     tested += 1
@@ -280,6 +309,7 @@ def test_vehicle_rsu_interaction_real_zokrates_dummy():
     
     # Compute witness
     args = [str(a), str(b)]
+    
     if not run_zokrates_compute_witness(args):
         print("[Real ZKP] Compute witness failed.")
         cleanup_zokrates_files()
@@ -293,11 +323,14 @@ def test_vehicle_rsu_interaction_real_zokrates_dummy():
     
     # Verify proof
     verification_result = run_zokrates_verify()
+    
     if DEBUG_MODE:
         print(f"[Real ZKP] Verification result: {verification_result}\n")
+        
     if verification_result:
         passed += 1
         print("[Real ZKP] End-to-end ZoKrates workflow succeeded!\n")
+        
     else:
         print("[Real ZKP] End-to-end ZoKrates workflow failed.\n")
         
@@ -306,35 +339,44 @@ def test_vehicle_rsu_interaction_real_zokrates_dummy():
 """ZKP isolated test with multiple vehicles, simulated"""
 def test_simulated_isolated_multiple_vehicles():
     
+    # Test Setup
     global tested, passed
     tested += 1
     print("\n=== Simulated ZKP Isolated Test: Multiple Vehicles ===")
     num_vehicles = 3
     vehicles = {}
     rsu_secrets = {}
+    
     for i in range(num_vehicles):
         vid = f"VEH{i+1:03d}"
         secret = secrets.token_hex(16)
         vehicles[vid] = Vehicle(vid, secret)
         rsu_secrets[vid] = secret
+        
     rsu = RSU(rsu_secrets)
     all_passed = True
+    
     for vid, vehicle in vehicles.items():
         otp, timestamp = vehicle.generate_otp()
         zkp_proof = vehicle.create_zkp(otp, timestamp)
         result = rsu.verify_zkp(vid, zkp_proof, timestamp)
+        
         if DEBUG_MODE:
             print(f"Vehicle {vid}: Verification result: {result}")
+            
         all_passed = all_passed and result
+        
     if all_passed:
         passed += 1
         print("[Simulated] All vehicles authenticated successfully.\n")
+        
     else:
         print("[Simulated] Some vehicles failed authentication.\n")
 
 """End-to-end test with multiple vehicles, simulated"""
 def test_simulated_end_to_end_multiple_vehicles():
     
+    # Test Setup
     global tested, passed
     tested += 1
     print("\n=== Simulated End-to-End Test: Multiple Vehicles ===")
@@ -348,6 +390,7 @@ def test_simulated_end_to_end_multiple_vehicles():
         secret = secrets.token_hex(16)
         vehicles[vid] = Vehicle(vid, secret)
         rsu_secrets[vid] = secret
+        
     rsu = RSU(rsu_secrets)
     all_passed = True
     
@@ -357,18 +400,23 @@ def test_simulated_end_to_end_multiple_vehicles():
         zkp_proof = vehicle.create_zkp(otp, timestamp)
         verification_result = rsu.verify_zkp(vid, zkp_proof, timestamp)
         outcome = simulate_blockchain_verification(vid, zkp_proof, timestamp, verification_result) if DEBUG_MODE else verification_result
+        
         if DEBUG_MODE:
             print(f"Vehicle {vid}: RSU result: {verification_result}, Blockchain outcome: {outcome}")
+            
         all_passed = all_passed and outcome
+        
     if all_passed:
         passed += 1
         print("[Simulated] All vehicles granted access by infrastructure.\n")
+        
     else:
         print("[Simulated] Some vehicles denied access.\n")
 
 """ZoKrates-integrated isolated test with multiple vehicles (dummy.zok)"""
 def test_zokrates_isolated_multiple_vehicles():
     
+    # Test Setup
     global tested, passed
     tested += 1
     print("\n=== ZoKrates-Integrated Isolated Test: Multiple Vehicles ===")
@@ -376,34 +424,44 @@ def test_zokrates_isolated_multiple_vehicles():
     num_vehicles = 2
     all_passed = True
     
+    # Generate multiple vehicles with unique IDs and random inputs that will each run ZoKrates CLI commands independently
     for i in range(num_vehicles):
         a = random.randint(1, 100)
         b = random.randint(1, 100)
+        
         if DEBUG_MODE:
             print(f"Vehicle {i+1}: Inputs a={a}, b={b}")
+            
         if not run_zokrates_compile(circuit_path):
             print("[ZoKrates] Compilation failed.")
             all_passed = False
             continue
+        
         if not run_zokrates_setup():
             print("[ZoKrates] Setup failed.")
             cleanup_zokrates_files()
             all_passed = False
             continue
+        
         args = [str(a), str(b)]
+        
         if not run_zokrates_compute_witness(args):
             print("[ZoKrates] Compute witness failed.")
             cleanup_zokrates_files()
             all_passed = False
             continue
+        
         if not run_zokrates_generate_proof():
             print("[ZoKrates] Proof generation failed.")
             cleanup_zokrates_files()
             all_passed = False
             continue
+        
         verification_result = run_zokrates_verify()
+        
         if DEBUG_MODE:
             print(f"Vehicle {i+1}: ZoKrates verification result: {verification_result}")
+            
         if not verification_result:
             all_passed = False
             
@@ -412,12 +470,14 @@ def test_zokrates_isolated_multiple_vehicles():
     if all_passed:
         passed += 1
         print("[ZoKrates] All vehicles' proofs verified successfully.\n")
+        
     else:
         print("[ZoKrates] Some vehicles' proofs failed verification.\n")
 
 """ZoKrates-integrated end-to-end test with multiple vehicles (dummy.zok + simulated blockchain)"""
 def test_zokrates_end_to_end_multiple_vehicles():
     
+    # Test Setup
     global tested, passed
     tested += 1
     print("\n=== ZoKrates-Integrated End-to-End Test: Multiple Vehicles ===")
@@ -430,34 +490,45 @@ def test_zokrates_end_to_end_multiple_vehicles():
         vid = f"ZOKR_VEH{i+1:03d}"
         a = random.randint(1, 100)
         b = random.randint(1, 100)
+        
         if DEBUG_MODE:
             print(f"Vehicle {vid}: Inputs a={a}, b={b}")
+            
         if not run_zokrates_compile(circuit_path):
             print("[ZoKrates] Compilation failed.")
             all_passed = False
             continue
+        
         if not run_zokrates_setup():
             print("[ZoKrates] Setup failed.")
             cleanup_zokrates_files()
             all_passed = False
             continue
+        
         args = [str(a), str(b)]
+        
         if not run_zokrates_compute_witness(args):
             print("[ZoKrates] Compute witness failed.")
             cleanup_zokrates_files()
             all_passed = False
             continue
+        
         if not run_zokrates_generate_proof():
             print("[ZoKrates] Proof generation failed.")
             cleanup_zokrates_files()
             all_passed = False
             continue
+        
         verification_result = run_zokrates_verify()
+        
         if DEBUG_MODE:
             print(f"Vehicle {vid}: ZoKrates verification result: {verification_result}")
+            
         outcome = simulate_blockchain_verification(vid, f"proof_{a}_{b}", int(time.time()), verification_result) if DEBUG_MODE else verification_result
+        
         if DEBUG_MODE:
             print(f"Vehicle {vid}: Blockchain outcome: {outcome}")
+            
         if not (verification_result and outcome):
             all_passed = False
             
@@ -466,6 +537,7 @@ def test_zokrates_end_to_end_multiple_vehicles():
     if all_passed:
         passed += 1
         print("[ZoKrates] All vehicles' end-to-end proofs and blockchain logs succeeded.\n")
+        
     else:
         print("[ZoKrates] Some vehicles failed end-to-end ZoKrates or blockchain verification.\n")
 
@@ -516,6 +588,7 @@ def testAndScenarioRunner():
     print(f"\nTotal tests run: {tested}")
     print(f"Total tests passed: {passed}")
     print(f"Total tests failed: {tested - passed}")
+    
     print()
     time.sleep(3)
 

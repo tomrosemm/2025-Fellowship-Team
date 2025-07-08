@@ -2,11 +2,12 @@
 rsu.py
 
 Requires: otp.py, zkp.py
-Defines the RSU (Roadside Unit) class, which verifies zero-knowledge proofs (ZKPs) submitted by vehicles for authentication.
 
-- The RSU is initialized with a mapping of vehicle IDs to their secrets.
-- Upon receiving a ZKP, the RSU reconstructs the expected OTP and ZKP using the stored secret and provided timestamp.
-- The RSU compares the received ZKP to the expected value to determine authentication success.
+Defines the RSU (Roadside Unit) class, which verifies zero-knowledge proofs (ZKPs) submitted by vehicles for authentication
+
+- The RSU is initialized with a mapping of vehicle IDs to their secrets
+- Upon receiving a ZKP, the RSU reconstructs the expected OTP and ZKP using the stored secret and provided timestamp
+- The RSU compares the received ZKP to the expected value to determine authentication success
 """
 
 from otp import generate_otp
@@ -37,8 +38,7 @@ class RSU:
     vehicle_secrets (dict): Mapping from vehicle_id to secret
     """
     def __init__(self, vehicle_secrets):
-        
-        # vehicle_secrets: dict mapping vehicle_id to secret
+
         self.vehicle_secrets = vehicle_secrets
 
 
@@ -54,22 +54,30 @@ class RSU:
     bool: True if the proof is valid, False otherwise
     """
     def verify_zkp(self, vehicle_id, zkp_proof, timestamp):
+        
         secret = self.vehicle_secrets.get(vehicle_id)
+        
         if not secret:
             return False
+        
         otp, _unused_timestamp = generate_otp(secret)
         expected_zkp = generate_zkp_proof(otp, timestamp)
+        
         return zkp_proof == expected_zkp
 
 if __name__ == "__main__":
+    
     # Simple test for RSU class
     vehicle_id = "TEST_VEHICLE"
     secret = "mysecret"
+    
     from vehicle import Vehicle
+    
     vehicle = Vehicle(vehicle_id, secret)
     otp, timestamp = vehicle.generate_otp()
     zkp = vehicle.create_zkp(otp, timestamp)
     rsu = RSU({vehicle_id: secret})
     result = rsu.verify_zkp(vehicle_id, zkp, timestamp)
+    
     print(f"[RSU] Verification result: {result}")
 

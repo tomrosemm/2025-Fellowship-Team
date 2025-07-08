@@ -18,7 +18,7 @@ def set_debug_mode(enabled):
     global DEBUG_MODE
     DEBUG_MODE = enabled
 
-"""Remove ZoKrates-generated files from the current directory."""
+"""Remove ZoKrates-generated files from the current directory"""
 def cleanup_zokrates_files():
     
     files_to_remove = [
@@ -51,6 +51,7 @@ Returns:
 bool: True if compilation succeeds, False otherwise
 """
 def run_zokrates_compile(circuit_path):
+    
     try:
         
         # Run the ZoKrates compile command with the given circuit file
@@ -79,6 +80,7 @@ Returns:
 bool: True if setup succeeds, False otherwise
 """
 def run_zokrates_setup():
+    
     try:
         
         # Run the ZoKrates setup command
@@ -110,6 +112,7 @@ Returns:
 bool: True if witness computation succeeds, False otherwise
 """
 def run_zokrates_compute_witness(args):
+    
     try:
         
         # Run the ZoKrates compute-witness command
@@ -168,6 +171,7 @@ Returns:
 bool: True if the proof is valid, False otherwise
 """
 def run_zokrates_verify():
+    
     try:
         
         # Run the ZoKrates verify command
@@ -228,3 +232,4 @@ if __name__ == "__main__":
         
     else:
         print("Proof is invalid or verification failed.")
+
